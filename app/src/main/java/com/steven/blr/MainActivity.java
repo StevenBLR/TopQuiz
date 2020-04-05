@@ -1,4 +1,4 @@
-package com.steven.blr.topquizz;
+package com.steven.blr;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,36 +10,35 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity
-{
+public class MainActivity extends AppCompatActivity {
+
     private TextView mGreetingText;
     private EditText mNameInput;
     private Button mPlayBt;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         // References aux elements graphiques
         mGreetingText = findViewById(R.id.activity_main_greeting_txt);
-        mNameInput = findViewById(R.id.activity_main_name_input);
+        mNameInput = findViewById(R.id.activiy_main_name_input);
         mPlayBt = findViewById(R.id.activity_main_play_btn);
 
         mPlayBt.setEnabled(false);
         mNameInput.addTextChangedListener(new TextWatcher()
         {
             @Override
-            public void beforeTextChanged(CharSequence s, int i, int i1, int i2)
+            public void beforeTextChanged(CharSequence s, int start, int count, int after)
             {
 
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int i, int i1, int i2)
+            public void onTextChanged(CharSequence s, int start, int before, int count)
             {
-                mPlayBt.setEnabled(s.toString().length() != 0);
+                mPlayBt.setEnabled((s.toString().length() != 0));
             }
 
             @Override
@@ -57,6 +56,5 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
-
     }
 }

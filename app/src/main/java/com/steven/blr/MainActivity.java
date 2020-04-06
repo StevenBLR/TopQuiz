@@ -2,6 +2,7 @@ package com.steven.blr;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -53,7 +54,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-
+                Intent gameActivityIntent = new Intent(MainActivity.this,GameActivity.class);
+                startActivity(gameActivityIntent);
             }
         });
     }

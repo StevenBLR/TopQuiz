@@ -1,11 +1,7 @@
 package com.steven.topquiz.model;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by Steven - on 06/04/2020
@@ -30,10 +26,10 @@ public class QuestionBank
     }
 
 
-    public Question getQuestion()
+    public Question getNextQuestion()
     {
         // Loop over the questions and return a new one at each call
-        mNextQuestionIndex = (mNextQuestionIndex + 1)%mQuestionList.size();
+        mNextQuestionIndex = (mNextQuestionIndex + 1) % mQuestionList.size();
         return mQuestionList.get(mNextQuestionIndex);
     }
 

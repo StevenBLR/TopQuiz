@@ -1,4 +1,4 @@
-package com.steven.blr;
+package com.steven.topquiz.controller;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,23 +11,41 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.steven.blr.GameActivity;
+import com.steven.topquiz.R;
+import com.steven.topquiz.model.User;
+
 public class MainActivity extends AppCompatActivity {
 
     private TextView mGreetingText;
     private EditText mNameInput;
     private Button mPlayBt;
+    private User mUser;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        init();
+        textEvents();
+        clickEvents();
+
+        mPlayBt.setEnabled(false);
+    }
+
+    private void init()
+    {
         // References aux elements graphiques
         mGreetingText = findViewById(R.id.activity_main_greeting_txt);
         mNameInput = findViewById(R.id.activiy_main_name_input);
         mPlayBt = findViewById(R.id.activity_main_play_btn);
+        mUser = new User();
+    }
 
-        mPlayBt.setEnabled(false);
+    private void textEvents()
+    {
         mNameInput.addTextChangedListener(new TextWatcher()
         {
             @Override
@@ -48,13 +66,18 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
 
+    private void clickEvents()
+    {
         mPlayBt.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                Intent gameActivityIntent = new Intent(MainActivity.this,GameActivity.class);
+                String firstName = mNameInput.getText().toString();
+                mUser.setFirstName(firstName);
+                Intent gameActivityIntent = new Intent(MainActivity.this, GameActivity.class);
                 startActivity(gameActivityIntent);
             }
         });

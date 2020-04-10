@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -30,6 +31,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private Question mCurrentQuestion;
     private int mNumberOfQuestions;
     private int mScore = 0;
+    public static final String BUNDLE_EXTRA_SCORE = "BUNDLE_EXTRA_SCORE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -86,7 +88,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         if (--mNumberOfQuestions == 0) // Decrement number of question
         {
             // End of the game
-            //Toast.makeText(this, String.format("Your score is {0}", mScore ),Toast.LENGTH_SHORT).show();
             displayAlertBox("Well done !", "Your score is " + mScore, "OK");
         }
         else
@@ -164,6 +165,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
+                        Intent intent = new Intent();
+                        intent.putExtra(BUNDLE_EXTRA_SCORE, mScore);
+                        setResult(RESULT_OK, intent);
                         finish();
                     }
                 })

@@ -49,37 +49,28 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-        init();
+
 
         // Init Values
         if (savedInstanceState != null)
         {
-            Log.d("Recuperation last value", "Recuperation last value");
             mScore = savedInstanceState.getInt(BUNDLE_STATE_SCORE);
             mNumberOfQuestions = savedInstanceState.getInt(BUNDLE_STATE_QUESTION);
         }
         else
         {
-            Log.d("Reset value", "Reset value");
-            mEnableTouchEvents = true;
             mNumberOfQuestions = 4;
             mScore = 0;
         }
+        mEnableTouchEvents = true;
+        init();
         displayQuestion(mCurrentQuestion);
     }
 
-/*
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState)
-    {
-        savedInstanceState.putInt(BUNDLE_STATE_SCORE, mScore);
-        savedInstanceState.putInt(BUNDLE_STATE_QUESTION, mNumberOfQuestions);
-        super.onPostCreate(savedInstanceState);
-    }
-*/
     @Override
     protected void onSaveInstanceState(Bundle outState)
     {
+        Log.d("Changed orientation", "Changed orientation");
         outState.putInt(BUNDLE_STATE_SCORE, mScore);
         outState.putInt(BUNDLE_STATE_QUESTION, mNumberOfQuestions);
 
@@ -88,10 +79,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     private void init()
     {
-        // Question generation
-        mQuestionBank = generateQuestions();
-        mCurrentQuestion = mQuestionBank.getNextQuestion();
-
         // Refs to Layout
         mQuestion = findViewById(R.id.activity_game_question_text);
         mAnswerBt1 = findViewById(R.id.activity_game_answer1_btn);
@@ -110,6 +97,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         mAnswerBt2.setOnClickListener(this);
         mAnswerBt3.setOnClickListener(this);
         mAnswerBt4.setOnClickListener(this);
+
+        // Question generation
+        mQuestionBank = generateQuestions();
+        mCurrentQuestion = mQuestionBank.getNextQuestion();
     }
 
 

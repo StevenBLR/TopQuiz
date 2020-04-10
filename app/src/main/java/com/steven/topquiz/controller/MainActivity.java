@@ -128,7 +128,6 @@ public class MainActivity extends AppCompatActivity
 
         mPreferences.getString(PREF_KEY_FIRSTNAME, userName);
         mPreferences.getInt(PREF_KEY_SCORE, lastScore);
-        Log.e("User name = ", userName);
 
         if (userName.length() > 0)
         {

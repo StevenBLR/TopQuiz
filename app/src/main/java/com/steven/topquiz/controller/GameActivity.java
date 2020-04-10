@@ -1,11 +1,16 @@
 package com.steven.topquiz.controller;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -29,24 +34,64 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     // System
     private QuestionBank mQuestionBank;
     private Question mCurrentQuestion;
+
     private int mNumberOfQuestions;
-    private int mScore = 0;
+    private int mScore;
+
+    private boolean mEnableTouchEvents;
+
     public static final String BUNDLE_EXTRA_SCORE = "BUNDLE_EXTRA_SCORE";
+    public static final String BUNDLE_STATE_SCORE = "currentScore";
+    public static final String BUNDLE_STATE_QUESTION = "currentQuestion";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-        mNumberOfQuestions = 5;
         init();
-        mQuestionBank = generateQuestions();
-        mCurrentQuestion = mQuestionBank.getNextQuestion();
+
+        // Init Values
+        if (savedInstanceState != null)
+        {
+            Log.d("Recuperation last value", "Recuperation last value");
+            mScore = savedInstanceState.getInt(BUNDLE_STATE_SCORE);
+            mNumberOfQuestions = savedInstanceState.getInt(BUNDLE_STATE_QUESTION);
+        }
+        else
+        {
+            Log.d("Reset value", "Reset value");
+            mEnableTouchEvents = true;
+            mNumberOfQuestions = 4;
+            mScore = 0;
+        }
         displayQuestion(mCurrentQuestion);
+    }
+
+/*
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState)
+    {
+        savedInstanceState.putInt(BUNDLE_STATE_SCORE, mScore);
+        savedInstanceState.putInt(BUNDLE_STATE_QUESTION, mNumberOfQuestions);
+        super.onPostCreate(savedInstanceState);
+    }
+*/
+    @Override
+    protected void onSaveInstanceState(Bundle outState)
+    {
+        outState.putInt(BUNDLE_STATE_SCORE, mScore);
+        outState.putInt(BUNDLE_STATE_QUESTION, mNumberOfQuestions);
+
+        super.onSaveInstanceState(outState);
     }
 
     private void init()
     {
+        // Question generation
+        mQuestionBank = generateQuestions();
+        mCurrentQuestion = mQuestionBank.getNextQuestion();
+
         // Refs to Layout
         mQuestion = findViewById(R.id.activity_game_question_text);
         mAnswerBt1 = findViewById(R.id.activity_game_answer1_btn);
@@ -67,6 +112,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         mAnswerBt4.setOnClickListener(this);
     }
 
+
+
     @Override
     public void onClick(View v)
     {
@@ -84,18 +131,35 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             Toast.makeText(this, "Wrong answer!", Toast.LENGTH_SHORT).show();
         }
 
-        // Next question or End
-        if (--mNumberOfQuestions == 0) // Decrement number of question
+        mEnableTouchEvents = false;
+        // Wait for 2 sec (2000 ms) and continue process
+        new Handler().postDelayed(new Runnable()
         {
-            // End of the game
-            displayAlertBox("Well done !", "Your score is " + mScore, "OK");
-        }
-        else
-        {
-            // Get next question and process it
-            mCurrentQuestion = mQuestionBank.getNextQuestion();
-            displayQuestion(mCurrentQuestion);
-        }
+            @Override
+            public void run()
+            {
+                mEnableTouchEvents = true;
+                // Next question or End
+                if (--mNumberOfQuestions == 0) // Decrement number of question
+                {
+                    // End of the game
+                    displayAlertBox("Well done !", "Your score is " + mScore, "OK");
+                }
+                else
+                {
+                    // Get next question and process it
+                    mCurrentQuestion = mQuestionBank.getNextQuestion();
+                    displayQuestion(mCurrentQuestion);
+                }
+            }
+        },2000);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev)
+    {
+        // If touch input enabled + input triggered --> continue input process
+        return mEnableTouchEvents && super.dispatchTouchEvent(ev);
     }
 
     private void displayQuestion(final Question question)

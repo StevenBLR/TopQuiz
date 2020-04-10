@@ -61,6 +61,16 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    // Debug
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+        System.out.println("MainActivity :: onStart()");
+    }
+
+
+
     private void init()
     {
         // Init values
@@ -108,8 +118,6 @@ public class MainActivity extends AppCompatActivity
             // Fetch the score from the Intent
             int score = data.getIntExtra(GameActivity.BUNDLE_EXTRA_SCORE, 0);
             mPreferences.edit().putInt(PREF_KEY_SCORE, score).apply();
-
-            greetUser();
         }
     }
 
@@ -137,4 +145,5 @@ public class MainActivity extends AppCompatActivity
                 .create()
                 .show();
     }
+
 }

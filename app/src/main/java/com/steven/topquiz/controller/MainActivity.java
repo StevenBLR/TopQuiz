@@ -20,17 +20,18 @@ import com.steven.topquiz.R;
 import com.steven.topquiz.model.User;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity
 {
     // UI
     @BindView(R.id.activity_main_greeting_txt)
-    private TextView mGreetingText;
+    public TextView mGreetingText;
     @BindView(R.id.activiy_main_name_input)
-    private EditText mNameInput;
+    public EditText mNameInput;
     @BindView(R.id.activity_main_play_btn)
-    private Button mPlayBt;
+    public Button mPlayBt;
 
     // System
     private User mUser;
@@ -51,6 +52,8 @@ public class MainActivity extends AppCompatActivity
         textEvents();
         greetUser();
         mPlayBt.setEnabled(false);
+
+        ButterKnife.bind(this);
         /*
         mPlayBt.setOnClickListener(new View.OnClickListener()
         {

@@ -19,11 +19,17 @@ import android.widget.TextView;
 import com.steven.topquiz.R;
 import com.steven.topquiz.model.User;
 
+import butterknife.BindView;
+import butterknife.OnClick;
+
 public class MainActivity extends AppCompatActivity
 {
     // UI
+    @BindView(R.id.activity_main_greeting_txt)
     private TextView mGreetingText;
+    @BindView(R.id.activiy_main_name_input)
     private EditText mNameInput;
+    @BindView(R.id.activity_main_play_btn)
     private Button mPlayBt;
 
     // System
@@ -45,6 +51,7 @@ public class MainActivity extends AppCompatActivity
         textEvents();
         greetUser();
         mPlayBt.setEnabled(false);
+        /*
         mPlayBt.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -57,8 +64,20 @@ public class MainActivity extends AppCompatActivity
                 startActivityForResult(gameActivityIntent, GAME_ACTIVITY_REQUEST_CODE);
             }
         });
+        */
 
 
+
+    }
+
+    @OnClick(R.id.activity_main_play_btn)
+    public void onClick()
+    {
+        String firstName = mNameInput.getText().toString();
+        mUser.setFirstName(firstName);
+        mPreferences.edit().putString(PREF_KEY_FIRSTNAME, mUser.getFirstName()).apply();
+        Intent gameActivityIntent = new Intent(MainActivity.this, GameActivity.class);
+        startActivityForResult(gameActivityIntent, GAME_ACTIVITY_REQUEST_CODE);
     }
 
     // Debug
@@ -76,12 +95,12 @@ public class MainActivity extends AppCompatActivity
         // Init values
         mPreferences = getPreferences(MODE_PRIVATE);
         mUser = new User();
-
+/*
         // References to UI
         mGreetingText = findViewById(R.id.activity_main_greeting_txt);
         mNameInput = findViewById(R.id.activiy_main_name_input);
         mPlayBt = findViewById(R.id.activity_main_play_btn);
-
+*/
 
     }
 

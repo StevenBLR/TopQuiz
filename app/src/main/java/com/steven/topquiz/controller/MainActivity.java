@@ -146,12 +146,19 @@ public class MainActivity extends AppCompatActivity
 
     private void greetUser()
     {
+        // mPreferences.getString(<CLE VERS LA VALEUR>, <Valeur par defaut>)
+        // La valeur par defaut devrait etre une string vide, ""
+        // sinon erreur quand tu fait if (userName.length() > 0)
+        // un null n'a pas de length
+        // ou voir solution en dessous
         String userName = mPreferences.getString(PREF_KEY_FIRSTNAME, null);
         int lastScore = mPreferences.getInt(PREF_KEY_SCORE, 0);
 
         mPreferences.getString(PREF_KEY_FIRSTNAME, userName);
         mPreferences.getInt(PREF_KEY_SCORE, lastScore);
 
+        // Si tu choisis d'utiliser null comme valeur par default
+        // tu devrait faire if (userName != null) a la place
         if (userName.length() > 0)
         {
             // Display Greeting
